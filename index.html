@@ -76,10 +76,17 @@
                     start.disabled = false;
                     recorder.stop();
                     recorder.getBlob(function(blob){
-                        var audio = document.createElement('audio');
-                        audio.src = URL.createObjectURL(blob);
-                        audio.controls = true;
-                        container.appendChild(audio);
+                        var fd = new FormData();
+                        fd.append("blob", blob, 'test.mp3');
+                        $.ajax({
+                            type: 'POST',
+                            url: '/upload',
+                            data: fd,
+                            processData: false,
+                            contentType: false
+                        }).done(function(data) {
+                            console.log(data);
+                        });
                     });
                 });
             };
